@@ -1,0 +1,49 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import { initialState } from '../reducers/newSmurfReducer';
+
+function SmurfForm() {
+  const emptySmurf = initialState.smurf;
+  const [newSmurf, setNewSmurf] = useState(emptySmurf);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(newSmurf);
+    const testSmurf = { name: 'Gorko', age: 999, height: '33 Smurfs' };
+    console.log(testSmurf);
+    axios({
+      method: 'post',
+      url: 'http://localhost:3333/smurfs',
+      data: newSmurf
+    });
+    setNewSmurf(emptySmurf);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        name='name'
+        value={newSmurf.name}
+        onChange={(e) => setNewSmurf({ ...newSmurf, name: e.target.value })}
+        placeholder='name'
+      />
+      <input
+        name='age'
+        value={newSmurf.age}
+        onChange={(e) =>
+          setNewSmurf({ ...newSmurf, age: Number(e.target.value) })
+        }
+        placeholder='age'
+      />
+      <input
+        name='height'
+        value={newSmurf.height}
+        onChange={(e) => setNewSmurf({ ...newSmurf, height: e.target.value })}
+        placeholder='height'
+      />
+      <button type='submit'>SUBMIT</button>
+    </form>
+  );
+}
+
+export default SmurfForm;
