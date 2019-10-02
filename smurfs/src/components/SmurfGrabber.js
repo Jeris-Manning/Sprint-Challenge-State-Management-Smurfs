@@ -1,25 +1,38 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { SmurfContext } from '../contexts/SmurfContext';
 
 const SmurfGrabber = () => {
+  const [smurf, setSmurf] = useState([]);
 
-  let allSmurfs = [];
-  // const [state, setState] = useContext(SmurfContext);
+  useEffect(() => {
+    const grabSmurfs = () => {
+      axios.get(`http://localhost:3333/smurfs`).then((respo) => {
+        setTimeout(setSmurf(respo.data), 5000);
+      });
+    };
+    grabSmurfs();
+  }, [smurf]);
 
-return (
+  return (
+    <div>
+      {smurf.map((aSmurf) => (
+        <SmurfProfile key={aSmurf.id} aSmurf={aSmurf} />
+      ))}
+    </div>
+  );
+};
 
-  axios.get(`http://localhost:3333/smurfs`)
-  .then((res) => {
-     res.data.map((smurf)=>
-    {
-<h1>{smurf.name}</h1>
-    }
-     )})
-)
-  
+function SmurfProfile({ aSmurf }) {
+  const { name, age, height, id } = aSmurf;
+  return (
+    <>
+      <div className='smurf-card'>
+        <h2>{name}</h2>
+        <h3>Age: {age}</h3>
+        <h3>Height: {height}</h3>
+      </div>
+    </>
+  );
 }
 
-export default SmurfGrabber
-
- 
+export default SmurfGrabber;

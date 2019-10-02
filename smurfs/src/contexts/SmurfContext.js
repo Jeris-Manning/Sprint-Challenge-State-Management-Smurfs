@@ -4,8 +4,7 @@ const SmurfContext = React.createContext([{}, () => {}]);
 const initialState = {
   name: '',
   age: '',
-  height: '',
-  village: []
+  height: ''
 };
 
 const SmurfProvider = (props) => {
